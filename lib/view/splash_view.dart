@@ -1,16 +1,25 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:news_app/view/home_view.dart';
+import 'package:news_app/view/home/home_view.dart';
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
     static const String routeName = 'intinal';
 
   @override
-  Widget build(BuildContext context) {
+  State<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  @override
+  void initState() {
     Timer(Duration (seconds:2),() {
       Navigator.of(context).pushReplacementNamed(HomeView.routeName);
     }
-    );
+    );    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+
     return Stack(
       children: [
         Container(

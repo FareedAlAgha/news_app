@@ -2,43 +2,49 @@
 import 'package:flutter/material.dart';
 
 import 'category_grid_view.dart';
+import '../category/category_widget.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
     static const String routeName = 'homeView';
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
     List<Category> category = [
       Category(
-            CategoryID : 'Sports'
+            CategoryID : 'sports'
           , CategoryImage :"assets/images/ball.png"
           , CategoryTitle : 'Sports'
           , CategoryBackground : Color.fromARGB(255, 201, 28, 34)
       ),
       Category(
-          CategoryID : 'General'
+          CategoryID : 'general'
           , CategoryImage :"assets/images/Politics.png"
           , CategoryTitle : 'General'
           , CategoryBackground : Color.fromARGB(255, 0, 62, 144)
       ),
       Category(
-          CategoryID : 'Health'
+          CategoryID : 'health'
           , CategoryImage :"assets/images/health.png"
           , CategoryTitle : 'Health'
           , CategoryBackground : Color.fromARGB(255, 237, 30, 121)
       ),
     Category(
-    CategoryID : 'Bussiness'
+    CategoryID : 'business'
     , CategoryImage :"assets/images/bussines.png"
     , CategoryTitle : 'Bussiness'
     , CategoryBackground : Color.fromARGB(255, 207, 126, 72)
     ),
     Category(
-    CategoryID : 'Environment'
+    CategoryID : 'technology'
     , CategoryImage :"assets/images/environment.png"
-    , CategoryTitle : 'Environment '
+    , CategoryTitle : 'Technology '
     , CategoryBackground : Color.fromARGB(255, 207, 130, 207)
     ),
       Category(
-          CategoryID : 'Science'
+          CategoryID : 'science'
           , CategoryImage :"assets/images/science.png"
           , CategoryTitle : 'Science '
           , CategoryBackground : Color.fromARGB(255, 242, 211, 82)
@@ -54,7 +60,8 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text('News App',
+        title: Text(
+          selectedCategory ==null? 'News App' : selectedCategory!.CategoryTitle,
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 22,
@@ -88,18 +95,26 @@ class HomeView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(Icons.menu, size: 30,),
-                  SizedBox(width: 10,),
-                  Text('Categories',style: Theme.of(context).textTheme.headline6!.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.black
+            InkWell(
+              onTap: (){
+                setState(() {
+                  selectedCategory =null;
+                  Navigator.pop(context);
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.menu, size: 30,),
+                    SizedBox(width: 10,),
+                    Text('Categories',style: Theme.of(context).textTheme.headline6!.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.black
 
 
-                  ),)
-                ],
+                    ),)
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -122,7 +137,7 @@ class HomeView extends StatelessWidget {
       ),
 
 
-      body: Container(
+      body:selectedCategory ==null ?  Container(
 
         padding: EdgeInsets.all(10),
             child: Column(
@@ -142,13 +157,24 @@ class HomeView extends StatelessWidget {
                     itemBuilder:(context,index)=> CategoryGridView(
                       index: index,
                       category : category[index],
+                      onClickItem: onClick ,
                     ),
                     itemCount: category.length,
                   ),
                 ),
               ],
             ),
-      ),
+      ) : CategoryNewsList(selectedCategory!),
     );
+  }
+
+  Category? selectedCategory = null;
+
+  void onClick(Category category){
+    setState(() {
+      selectedCategory=category;
+    });
+
+
   }
 }
